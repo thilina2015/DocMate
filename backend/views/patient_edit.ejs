@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head><%- include("partials/head", { title: "Edit Profile - DocMate" }) %></head>
+<body>
+  <%- include("partials/navbar") %>
+
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="dm-card p-4 p-md-5">
+          <h2 class="fw-extrabold mb-1">Edit Personal Details</h2>
+          <div class="small-muted">Only the patient can edit this section.</div>
+
+          <form method="POST" action="/patient/profile/edit" class="mt-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Full Name</label>
+                <input class="form-control" name="name" value="<%= profile.name %>" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">DOB</label>
+                <input class="form-control" type="date" name="dob" value="<%= profile.dob || '' %>">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Blood Group</label>
+                <input class="form-control" name="blood_group" value="<%= profile.blood_group || '' %>">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Weight (kg)</label>
+                <input class="form-control" name="weight" type="number" step="0.1" value="<%= profile.weight || '' %>">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Height (cm)</label>
+                <input class="form-control" name="height" type="number" step="0.1" value="<%= profile.height || '' %>">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Past Injuries</label>
+                <textarea class="form-control" name="past_injuries" rows="3"><%= profile.past_injuries || '' %></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Past Illness</label>
+                <textarea class="form-control" name="past_illness" rows="3"><%= profile.past_illness || '' %></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg w-100 mt-4" type="submit">Save Changes</button>
+            <a class="btn btn-outline-secondary w-100 mt-2" href="/patient/profile">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include("partials/footer") %>
+</body>
+</html>

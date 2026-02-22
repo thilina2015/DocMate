@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head><%- include("partials/head", { title: "DocMate" }) %></head>
+<body>
+  <%- include("partials/navbar") %>
+
+  <div class="container mt-4">
+    <div class="dm-hero p-4 p-md-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <div class="badge badge-soft rounded-pill px-3 py-2">Modern • Fast • Secure</div>
+          <h1 class="fw-extrabold display-6 mt-3">Manage patient profiles with confidence.</h1>
+          <p class="small-muted mt-2">
+            Patients can view and edit personal details. Doctors can search patients and add medical updates with reports.
+            Doctor registrations require admin approval.
+          </p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="/register" class="btn btn-primary btn-lg">Create Account</a>
+            <a href="/login" class="btn btn-outline-primary btn-lg">Login</a>
+          </div>
+          <div class="small-muted mt-3">
+            Admin: <b>admin@docmate.local</b> / <b>admin123</b>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="hero-img" alt="DocMate Healthcare Team"
+            src="/public/images/docmate-hero.png">
+
+          <div class="row g-3 mt-3">
+            <div class="col-md-6">
+              <div class="dm-card p-3 h-100">
+                <div class="fw-bold">Patients</div>
+                <div class="small-muted">View your profile + past doctor updates.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="dm-card p-3 h-100">
+                <div class="fw-bold">Doctors</div>
+                <div class="small-muted">Search patients and add updates + reports.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mt-4 dm-soft"><%= flash.msg %></div>
+    <% } %>
+  </div>
+
+  <%- include("partials/footer") %>
+</body>
+</html>
