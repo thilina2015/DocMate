@@ -3,8 +3,8 @@ MediTrack – Doctor & Patient Medical Records System
 Group Information
 
 Student 1: Thilina Dilshan Hettiarachchi – ITBIN-2313-0138 – Role: DevOps / Release Manager  
-Student 2: Nethmi Priyanjala– ITBIN-2313-0085– Role: Backend Developer  
-Student 3:Tharushi Salwathura Arachchi – ITBIN-2313-0138 – Role: Frontend Developer  
+Student 2:Tharushi Salwathura Arachchi – ITBIN-2313-0138 – Role: Backend Developer  
+Student 3:Nethmi Priyanjala– ITBIN-2313-0085 – Role: Frontend Developer  
 
 Project Description
 
