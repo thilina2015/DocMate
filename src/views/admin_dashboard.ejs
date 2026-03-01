@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head><%- include("partials/head", { title: "Admin Panel - DocMate" }) %></head>
+<body>
+  <%- include("partials/navbar") %>
+
+  <div class="container mt-4">
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> dm-soft"><%= flash.msg %></div>
+    <% } %>
+
+    <div class="dm-card p-4">
+      <div class="fw-extrabold fs-4">Doctor Approvals</div>
+      <div class="small-muted">Approve doctors to allow login and patient access.</div>
+
+      <div class="table-responsive mt-3">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Doctor ID</th>
+              <th>Hospital</th>
+              <th>Specialization</th>
+              <th>Service</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% doctors.forEach(d => { %>
+              <tr>
+                <td class="fw-semibold">#<%= d.id %></td>
+                <td><%= d.name %></td>
+                <td class="small-muted"><%= d.email %></td>
+                <td><%= d.doctor_id || "-" %></td>
+                <td><%= d.hospital || "-" %></td>
+                <td><%= d.specialization || "-" %></td>
+                <td><%= d.service_duration || "-" %></td>
+                <td>
+                  <% if (d.approved === 1) { %>
+                    <span class="badge text-bg-success">Approved</span>
+                  <% } else { %>
+                    <span class="badge text-bg-warning">Pending</span>
+                  <% } %>
+                </td>
+                <td class="text-end">
+                  <% if (d.approved === 0) { %>
+                    <form method="POST" action="/admin/approve/<%= d.id %>" class="d-inline">
+                      <button class="btn btn-primary btn-sm" type="submit">Approve</button>
+                    </form>
+                    <form method="POST" action="/admin/reject/<%= d.id %>" class="d-inline ms-1">
+                      <button class="btn btn-outline-danger btn-sm" type="submit">Reject</button>
+                    </form>
+                  <% } else { %>
+                    <span class="small-muted">—</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if (!doctors.length) { %>
+        <div class="alert alert-light dm-soft mb-0">No doctor registrations yet.</div>
+      <% } %>
+    </div>
+  </div>
+
+  <%- include("partials/footer") %>
+</body>
+</html>
