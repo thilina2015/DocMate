@@ -1,0 +1,31 @@
+<nav class="container dm-nav mt-3">
+  <div class="d-flex align-items-center justify-content-between px-3 px-md-4 py-3">
+    <a class="d-flex align-items-center gap-2 text-dark" href="/">
+      <span class="fw-extrabold fs-4">DocMate</span>
+      <span class="badge badge-soft rounded-pill">Secure Health Records</span>
+    </a>
+
+    <div class="d-flex align-items-center gap-2">
+      <% if (!me) { %>
+        <a class="btn btn-outline-primary" href="/login">Login</a>
+        <a class="btn btn-primary" href="/register">Register</a>
+      <% } else { %>
+        <span class="small-muted d-none d-md-inline">Hi, <b><%= me.name %></b></span>
+
+        <% if (me.role === "patient") { %>
+          <a class="btn btn-outline-primary" href="/patient/profile">My Profile</a>
+        <% } %>
+        <% if (me.role === "doctor") { %>
+          <a class="btn btn-outline-primary" href="/doctor">Doctor Panel</a>
+        <% } %>
+        <% if (me.role === "admin") { %>
+          <a class="btn btn-outline-primary" href="/admin">Admin Panel</a>
+        <% } %>
+
+        <form method="POST" action="/logout" class="d-inline">
+          <button class="btn btn-dark" type="submit">Logout</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</nav>
