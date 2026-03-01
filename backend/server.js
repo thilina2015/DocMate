@@ -442,8 +442,8 @@ app.post("/admin/reject/:id", requireRole("admin"), (req, res) => {
   });
 });
 
-const server = app.listen(PORT, "127.0.0.1", () => {
-  console.log(`DocMate running on http://127.0.0.1:${PORT}`);
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`DocMate running on port ${PORT}`);
 });
 
 server.on("error", (err) => {
