@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head><%- include("partials/head", { title: "Patient View - DocMate" }) %></head>
+<body>
+  <%- include("partials/navbar") %>
+
+  <div class="container mt-4">
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> dm-soft"><%= flash.msg %></div>
+    <% } %>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="dm-card p-4">
+          <div class="fw-extrabold fs-5"><%= patient.name %></div>
+          <div class="small-muted"><%= patient.email %></div>
+
+          <hr class="hr-soft my-3">
+
+          <div class="small-muted">Patient ID</div>
+          <div class="fw-bold">#<%= patient.id %></div>
+
+          <div class="mt-3"><span class="fw-semibold">DOB:</span> <span class="small-muted"><%= patient.dob || "-" %></span></div>
+          <div class="mt-1"><span class="fw-semibold">Blood:</span> <span class="small-muted"><%= patient.blood_group || "-" %></span></div>
+          <div class="mt-1"><span class="fw-semibold">Weight:</span> <span class="small-muted"><%= patient.weight || "-" %></span></div>
+          <div class="mt-1"><span class="fw-semibold">Height:</span> <span class="small-muted"><%= patient.height || "-" %></span></div>
+
+          <hr class="hr-soft my-3">
+
+          <div class="fw-bold">Past Injuries</div>
+          <div class="small-muted"><%= patient.past_injuries || "No data" %></div>
+
+          <div class="fw-bold mt-3">Past Illness</div>
+          <div class="small-muted"><%= patient.past_illness || "No data" %></div>
+
+          <a class="btn btn-outline-secondary w-100 mt-4" href="/doctor">Back</a>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="dm-card p-4">
+          <div class="fw-extrabold fs-4">Add Doctor Update</div>
+          <div class="small-muted">Add new illness, medicines, notes and upload report.</div>
+
+          <form method="POST" action="/doctor/patient/<%= patient.id %>/update" enctype="multipart/form-data" class="mt-3">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-semibold">Title</label>
+                <input class="form-control" name="title" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Illness / Condition</label>
+                <textarea class="form-control" name="illness" rows="3"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Medicines</label>
+                <textarea class="form-control" name="medicines" rows="3" placeholder="e.g. Paracetamol 500mg x 3/day"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Notes</label>
+                <textarea class="form-control" name="notes" rows="3"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Medical Report (optional)</label>
+                <input class="form-control" type="file" name="report_file" accept=".pdf,.png,.jpg,.jpeg">
+              </div>
+            </div>
+            <button class="btn btn-primary w-100 mt-3" type="submit">Add Update</button>
+          </form>
+
+          <hr class="hr-soft my-4">
+
+          <div class="fw-extrabold fs-5">Update History</div>
+          <div class="small-muted">All doctor updates for this patient.</div>
+
+          <div class="mt-3 d-flex flex-column gap-3">
+            <% if (!updates.length) { %>
+              <div class="alert alert-light dm-soft mb-0">No updates yet.</div>
+            <% } %>
+
+            <% updates.forEach(u => { %>
+              <div class="dm-soft bg-white border p-3">
+                <div class="d-flex justify-content-between flex-wrap gap-2">
+                  <div>
+                    <div class="fw-bold"><%= u.title %></div>
+                    <div class="small-muted">By Dr. <%= u.doctor_name %> • <%= u.created_at %></div>
+                  </div>
+                  <% if (u.report_file) { %>
+                    <a class="btn btn-outline-primary btn-sm" href="<%= u.report_file %>" target="_blank">View Report</a>
+                  <% } %>
+                </div>
+
+                <% if (u.illness) { %>
+                  <div class="mt-2"><span class="fw-semibold">Illness:</span> <span class="small-muted"><%= u.illness %></span></div>
+                <% } %>
+                <% if (u.medicines) { %>
+                  <div class="mt-1"><span class="fw-semibold">Medicines:</span> <span class="small-muted"><%= u.medicines %></span></div>
+                <% } %>
+                <% if (u.notes) { %>
+                  <div class="mt-1"><span class="fw-semibold">Notes:</span> <span class="small-muted"><%= u.notes %></span></div>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include("partials/footer") %>
+</body>
+</html>
