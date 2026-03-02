@@ -1,0 +1,11 @@
+**/node_modules
+**/.git
+**/.github
+**/.DS_Store
+npm-debug.log
+*.log
+
+# Do NOT bake runtime data into image
+backend/uploads
+backend/docmate.db
+backend/sessions.db

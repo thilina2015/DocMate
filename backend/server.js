@@ -100,7 +100,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(
   session({
     store: new SQLiteStore({ db: "sessions.db", dir: __dirname }),
-    secret: "docmate_secret_change_me",
+    secret: process.env.SESSION_SECRET || "docmate_secret_change_me",
     resave: false,
     saveUninitialized: false,
     cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 6 }
@@ -137,6 +137,10 @@ app.use((req, res, next) => {
   res.locals.me = req.session.user || null;
   res.locals.flash = consumeFlash(req);
   next();
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true });
 });
 
 app.get("/", (req, res) => res.render("home"));
@@ -442,8 +446,8 @@ app.post("/admin/reject/:id", requireRole("admin"), (req, res) => {
   });
 });
 
-const server = app.listen(PORT, "127.0.0.1", () => {
-  console.log(`DocMate running on http://127.0.0.1:${PORT}`);
+const server =app.listen(PORT, "0.0.0.0", () => {
+  console.log(`DocMate running on port ${PORT}`);
 });
 
 server.on("error", (err) => {
