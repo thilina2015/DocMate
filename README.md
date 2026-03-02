@@ -127,3 +127,16 @@ Installation
 cd repo-name
 npm install
 npm run dev
+
+
+prerequisites: Docker Desktop
+
+commands:
+
+docker compose up --build
+
+open http://localhost:3000
+
+http://localhost:3000/health
+
+stop: docker compose down
