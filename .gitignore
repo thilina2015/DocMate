@@ -1,5 +1,11 @@
 node_modules/
 backend/node_modules/
-backend/docmate.db
+backend/*.db
+backend/sessions.db
 backend/uploads/
 .env
+.env.local
+.env.*.local
+*.db
+*.sqlite
+*.sqlite3
