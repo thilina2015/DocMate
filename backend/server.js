@@ -446,10 +446,16 @@ app.post("/admin/reject/:id", requireRole("admin"), (req, res) => {
   });
 });
 
-const server =app.listen(PORT, "0.0.0.0", () => {
-  console.log(`DocMate running on port ${PORT}`);
-});
+// Only listen when running locally (not on Vercel)
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`DocMate running on port ${PORT}`);
+  });
 
-server.on("error", (err) => {
-  console.error("Server error:", err);
-});
+  server.on("error", (err) => {
+    console.error("Server error:", err);
+  });
+}
+
+// Export for Vercel serverless
+module.exports = app;
