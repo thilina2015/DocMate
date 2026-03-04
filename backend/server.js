@@ -10,13 +10,31 @@ const multer = require("multer");
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
-const DB_PATH = path.join(__dirname, "docmate.db");
-const UPLOAD_DIR = path.join(__dirname, "uploads");
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
+// Use /tmp for Vercel or local directory
+const DB_PATH = process.env.VERCEL 
+  ? "/tmp/docmate.db" 
+  : path.join(__dirname, "docmate.db");
+const UPLOAD_DIR = process.env.VERCEL 
+  ? "/tmp/uploads" 
+  : path.join(__dirname, "uploads");
 
-const db = new sqlite3.Database(DB_PATH);
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
+} catch (e) {
+  console.log("Could not create uploads directory:", e.message);
+}
 
-db.serialize(() => {
+let db;
+try {
+  db = new sqlite3.Database(DB_PATH);
+} catch (e) {
+  console.error("Database initialization error:", e.message);
+  // Create a dummy db object to prevent crashes
+  db = { run: () => {}, get: () => {}, all: () => {}, serialize: (cb) => cb() };
+}
+
+if (db && db.serialize) {
+  db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,7 +104,8 @@ db.serialize(() => {
       );
     }
   });
-});
+  });
+}
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../frontend/views"));
@@ -97,9 +116,18 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend/public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+let sessionStore;
+try {
+  sessionStore = new SQLiteStore({ db: process.env.VERCEL ? "/tmp/sessions.db" : "sessions.db", dir: __dirname });
+} catch (e) {
+  console.log("SQLiteStore failed, using memory store:", e.message);
+  // Fallback to default memory store
+  sessionStore = undefined;
+}
+
 app.use(
   session({
-    store: new SQLiteStore({ db: "sessions.db", dir: __dirname }),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || "docmate_secret_change_me",
     resave: false,
     saveUninitialized: false,
