@@ -22,14 +22,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache: npm
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        run: cd backend && npm ci
+      - name: Install dependencies
+        run: npm ci
 
       - name: Check code syntax
-        run: cd backend && node -c server.js && echo "✓ Backend syntax OK"
+        run: node -c server.js && echo "✓ Backend syntax OK"
 
       - name: Lint check (optional)
         run: |
@@ -53,7 +53,7 @@ jobs:
         run: |
           docker run --rm -d -p 3000:3000 --name docmate-test docmate:latest
           sleep 5
-          curl -f http://localhost:3000/api/health || exit 1
+          curl -f http://localhost:3000/ || exit 1
           docker stop docmate-test
         continue-on-error: true
 
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run npm audit
-        run: cd backend && npm audit || echo "Vulnerabilities found"
+        run: npm audit || echo "Vulnerabilities found"
         continue-on-error: true
 
       - name: Check for secrets
