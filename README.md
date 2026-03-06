@@ -122,7 +122,7 @@ Installation
 
   bash
 
-   git clone https://github.com/thilina2015/DocMate.git
+  git clone https://github.com/thilina2015/DocMate.git
 
 cd repo-name
 npm install
